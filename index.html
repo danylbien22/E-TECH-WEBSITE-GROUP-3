@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>E-TECH Group 3</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-animated" aria-hidden="true"></div>
+  <div class="container">
+    <header>
+      <h1>E-TECH Group 3</h1>
+      <div class="controls">
+        <div id="subjects" class="subjects" aria-label="subjects"></div>
+      </div>
+    </header>
+
+    <main>
+      <section id="groupIntro" class="hero" aria-label="Group introduction">
+        <div style="flex:1">
+          <h2 style="margin:0 0 8px">Group 3 — ETECH</h2>
+          <p style="margin:0;color:var(--muted)">We are Group 3 of the E-TECH cohort. Below are the members of our group — click a member to view their project gallery.</p>
+        </div>
+        <div style="min-width:280px">
+          <div id="members" class="members-grid" aria-label="members"></div>
+        </div>
+      </section>
+
+      <section id="projects" class="grid" aria-live="polite">
+      </section>
+    </main>
+
+    <footer>
+      © <span id="year"></span> ALAMMM MO HAAA ARAYYY MOOOOO
+    </footer>
+  </div>
+
+  <div id="projectModal" class="modal-backdrop" role="dialog" aria-hidden="true">
+    <div class="modal" role="document">
+      <div style="display:flex;align-items:center;gap:12px">
+        <h2 id="modalTitle" style="margin:0;font-size:1.1rem"></h2>
+        <span id="modalType" class="type"></span>
+        <button id="modalClose" class="close" aria-label="Close">✕</button>
+      </div>
+      <div id="modalBody" style="margin-top:12px">
+        <div style="margin-bottom:12px">
+          <img id="modalViewer" src="" alt="" style="width:100%;max-height:420px;object-fit:contain;border-radius:8px;display:block;background:#fafbfe;border:1px solid #eef2f6">
+        </div>
+        <div id="modalGallery" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+        <div style="margin-top:14px;display:flex;gap:8px">
+          <a id="modalProjects" class="btn primary" href="#" rel="noopener">Open CPT/PT</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
