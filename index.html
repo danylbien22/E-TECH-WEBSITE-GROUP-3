@@ -31,6 +31,25 @@
       </div>
     </header>
 
+    <section class="audio-player" aria-label="Ambient audio controls">
+      <div class="audio-disc-wrapper" aria-hidden="true">
+        <div class="audio-disc"></div>
+        <div class="audio-disc-center"></div>
+      </div>
+      <div class="audio-controls">
+        <button id="audioPlayPause" type="button" class="btn ghost" aria-pressed="false">Play music</button>
+        <button id="audioMute" type="button" class="btn ghost" aria-pressed="false">Mute</button>
+        <label for="audioVolume">Volume</label>
+        <input id="audioVolume" type="range" min="0" max="1" step="0.01" value="0.6">
+        <label>Tracks</label>
+        <div class="audio-track-options" role="group" aria-label="Track selection">
+          <button type="button" class="track-option" data-src="audio/1st song.mp3">YDB</button>
+          <button type="button" class="track-option" data-src="audio/2nd song.mp3">YWF</button>
+        </div>
+      </div>
+      <audio id="backgroundAudio" preload="metadata"></audio>
+    </section>
+
     <main>
       <section id="groupIntro" class="hero" aria-label="Group introduction">
         <div style="flex:1">

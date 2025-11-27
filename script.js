@@ -587,6 +587,90 @@ if(spotlightContainer && spotlightItems.length){
   spotlightContainer.querySelectorAll('.spotlight-card').forEach(card => observer.observe(card));
 }
 
+const backgroundAudio = document.getElementById('backgroundAudio');
+const audioPlayPause = document.getElementById('audioPlayPause');
+const audioMute = document.getElementById('audioMute');
+const audioVolume = document.getElementById('audioVolume');
+const audioTrackButtons = document.querySelectorAll('.track-option');
+const audioDisc = document.querySelector('.audio-disc');
+
+function setPlayState(isPlaying){
+  if(!audioPlayPause || !audioDisc) return;
+  audioPlayPause.textContent = isPlaying ? 'Pause music' : 'Play music';
+  audioPlayPause.setAttribute('aria-pressed', isPlaying ? 'true' : 'false');
+  audioDisc.classList.toggle('spinning', isPlaying);
+}
+
+function updateVolumeFromSlider(){
+  if(!backgroundAudio || !audioVolume) return;
+  const vol = Math.min(1, Math.max(0, parseFloat(audioVolume.value)));
+  backgroundAudio.volume = vol;
+  if(vol > 0 && backgroundAudio.muted){
+    backgroundAudio.muted = false;
+  }
+  if(audioMute){
+    const isMuted = vol <= 0 || backgroundAudio.muted;
+    audioMute.textContent = isMuted ? 'Unmute' : 'Mute';
+    audioMute.setAttribute('aria-pressed', isMuted ? 'true' : 'false');
+  }
+}
+
+function selectTrack(button, options = {}){
+  if(!backgroundAudio || !button) return;
+  audioTrackButtons.forEach(btn => btn.classList.toggle('active', btn === button));
+  const src = button.dataset && button.dataset.src;
+  if(!src) return;
+  backgroundAudio.src = src;
+  backgroundAudio.load();
+  if(options.resume){
+    backgroundAudio.play().catch(() => {});
+  }
+}
+
+if(backgroundAudio){
+  backgroundAudio.volume = audioVolume ? parseFloat(audioVolume.value) : 0.6;
+  backgroundAudio.addEventListener('play', () => setPlayState(true));
+  backgroundAudio.addEventListener('pause', () => setPlayState(false));
+  setPlayState(!backgroundAudio.paused);
+}
+
+if(audioPlayPause && backgroundAudio){
+  audioPlayPause.addEventListener('click', () => {
+    if(backgroundAudio.paused){
+      backgroundAudio.play().catch(() => {});
+    } else {
+      backgroundAudio.pause();
+    }
+  });
+}
+
+if(audioMute && backgroundAudio){
+  audioMute.addEventListener('click', () => {
+    const toggled = !backgroundAudio.muted;
+    backgroundAudio.muted = toggled;
+    audioMute.textContent = toggled ? 'Unmute' : 'Mute';
+    audioMute.setAttribute('aria-pressed', toggled ? 'true' : 'false');
+    if(audioVolume){
+      audioVolume.value = toggled ? '0' : backgroundAudio.volume.toString();
+    }
+  });
+}
+
+if(audioVolume && backgroundAudio){
+  audioVolume.addEventListener('input', () => updateVolumeFromSlider());
+  audioVolume.addEventListener('change', () => updateVolumeFromSlider());
+}
+
+if(audioTrackButtons && audioTrackButtons.length){
+  selectTrack(audioTrackButtons[0]);
+  audioTrackButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const wasPlaying = !backgroundAudio.paused;
+      selectTrack(button, {resume: wasPlaying});
+    });
+  });
+}
+
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
 
 const modal = document.getElementById('projectModal');
