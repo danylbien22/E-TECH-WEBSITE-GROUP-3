@@ -8,10 +8,25 @@
 </head>
 <body>
   <div class="bg-animated" aria-hidden="true"></div>
+
+  <div id="welcomeOverlay" class="welcome-overlay" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle" aria-hidden="true">
+    <div class="welcome-dialog">
+      <div class="welcome-header">
+        <h2 id="welcomeTitle">Welcome to E-TECH Group 3</h2>
+        <button id="welcomeDismiss" class="welcome-close" aria-label="Close welcome message">✕</button>
+      </div>
+      <p class="welcome-lead">Explore our collaborative portfolio and discover the work each member contributed to the course.</p>
+      <button id="welcomeEnter" class="btn primary welcome-btn">Arat G!</button>
+    </div>
+  </div>
   <div class="container">
     <header>
       <h1>E-TECH Group 3</h1>
       <div class="controls">
+        <div class="theme-control" role="group" aria-label="Theme selection">
+          <button id="themeToggle" class="theme-label" type="button" aria-haspopup="true" aria-controls="themeControl" aria-expanded="false">Themes</button>
+          <div id="themeControl" class="theme-options" role="menu" aria-hidden="true"></div>
+        </div>
         <div id="subjects" class="subjects" aria-label="subjects"></div>
       </div>
     </header>
@@ -28,6 +43,35 @@
       </section>
 
       <section id="projects" class="grid" aria-live="polite">
+      </section>
+
+      <section id="highlightReel" class="highlight-reel" aria-label="Highlight reel">
+        <div class="highlight-card">
+          <div class="highlight-media">
+            <img id="highlightImage" src="" alt="" loading="lazy">
+            <div class="highlight-overlay"></div>
+          </div>
+          <div class="highlight-meta">
+            <p class="highlight-label">Featured work</p>
+            <h3 id="highlightTitle"></h3>
+            <p id="highlightCaption"></p>
+            <div class="highlight-controls">
+              <button id="highlightPrev" type="button" class="btn ghost">Prev</button>
+              <button id="highlightNext" type="button" class="btn ghost">Next</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="spotlightStrip" class="spotlight-strip" aria-label="Member spotlight">
+        <div class="strip-header">
+          <div>
+            <p class="highlight-label">Spotlight</p>
+            <h3>Group highlights</h3>
+          </div>
+          <p class="strip-note">A glimpse into what each member brings.</p>
+        </div>
+        <div class="spotlight-cards"></div>
       </section>
     </main>
 
@@ -54,6 +98,18 @@
       </div>
     </div>
   </div>
+
+  <div id="previewFullscreenOverlay" class="preview-fullscreen-overlay" aria-hidden="true" role="dialog" aria-label="Image preview">
+    <div class="preview-fullscreen-body">
+      <img id="previewFullscreenImage" src="" alt="" loading="lazy">
+      <button id="previewFullscreenClose" class="btn" type="button">Close</button>
+    </div>
+  </div>
+
+  <button id="themeMoodBadge" class="theme-mood-badge" type="button" aria-label="Open theme menu" aria-haspopup="true">
+    <span class="badge-color"></span>
+    <span class="badge-label">Themes</span>
+  </button>
 
   <script src="script.js"></script>
 
