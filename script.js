@@ -650,6 +650,20 @@ function setPlayState(isPlaying){
   }
 }
 
+function syncVolumeUI(){
+  if(!backgroundAudio) return;
+  const vol = Math.min(1, Math.max(0, backgroundAudio.volume));
+  const displayValue = backgroundAudio.muted ? 0 : vol;
+  if(audioVolume){
+    audioVolume.value = displayValue.toFixed(2);
+  }
+  if(audioMute){
+    const isMuted = backgroundAudio.muted || displayValue <= 0;
+    audioMute.textContent = isMuted ? 'Unmute' : 'Mute';
+    audioMute.setAttribute('aria-pressed', isMuted ? 'true' : 'false');
+  }
+}
+
 function updateVolumeFromSlider(){
   if(audioSilentPreference) return;
   if(!backgroundAudio || !audioVolume) return;
@@ -658,11 +672,7 @@ function updateVolumeFromSlider(){
   if(vol > 0 && backgroundAudio.muted){
     backgroundAudio.muted = false;
   }
-  if(audioMute){
-    const isMuted = vol <= 0 || backgroundAudio.muted;
-    audioMute.textContent = isMuted ? 'Unmute' : 'Mute';
-    audioMute.setAttribute('aria-pressed', isMuted ? 'true' : 'false');
-  }
+  syncVolumeUI();
 }
 
 function readConsent(){
@@ -774,6 +784,7 @@ function applySilentPreference(enabled, options = {}){
   if(!options.skipStatus){
     setPlayState(!backgroundAudio?.paused);
   }
+  syncVolumeUI();
   if(options.persist !== false){
     persistAudioPreference();
   }
@@ -801,10 +812,15 @@ if(backgroundAudio){
   backgroundAudio.volume = audioVolume ? parseFloat(audioVolume.value) : 0.6;
   backgroundAudio.addEventListener('play', () => setPlayState(true));
   backgroundAudio.addEventListener('pause', () => setPlayState(false));
+  backgroundAudio.addEventListener('volumechange', () => {
+    if(audioSilentPreference) return;
+    syncVolumeUI();
+  });
   applySilentPreference(audioSilentPreference, { persist:false, skipStatus:true });
   if(audioConsentStatus === 'granted' && !audioSilentPreference){
     backgroundAudio.play().catch(() => {});
   }
+  syncVolumeUI();
   setPlayState(!backgroundAudio.paused);
 }
 
@@ -830,13 +846,8 @@ if(audioPlayPause && backgroundAudio){
 if(audioMute && backgroundAudio){
   audioMute.addEventListener('click', () => {
     if(audioSilentPreference) return;
-    const toggled = !backgroundAudio.muted;
-    backgroundAudio.muted = toggled;
-    audioMute.textContent = toggled ? 'Unmute' : 'Mute';
-    audioMute.setAttribute('aria-pressed', toggled ? 'true' : 'false');
-    if(audioVolume){
-      audioVolume.value = toggled ? '0' : backgroundAudio.volume.toString();
-    }
+    backgroundAudio.muted = !backgroundAudio.muted;
+    syncVolumeUI();
   });
 }
 
