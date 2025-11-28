@@ -35,16 +35,24 @@
       <div class="audio-disc-wrapper" aria-hidden="true">
         <div class="audio-disc"></div>
         <div class="audio-disc-center"></div>
+        <span class="audio-note" aria-hidden="true">♪</span>
       </div>
       <div class="audio-controls">
         <button id="audioPlayPause" type="button" class="btn ghost" aria-pressed="false">Play music</button>
         <button id="audioMute" type="button" class="btn ghost" aria-pressed="false">Mute</button>
+        <button id="audioQuietToggle" type="button" class="btn ghost" aria-pressed="false" aria-label="Prefer no background music">Keep silent</button>
         <label for="audioVolume">Volume</label>
         <input id="audioVolume" type="range" min="0" max="1" step="0.01" value="0.6">
-        <label>Tracks</label>
-        <div class="audio-track-options" role="group" aria-label="Track selection">
-          <button type="button" class="track-option" data-src="audio/1st song.mp3">YDB</button>
-          <button type="button" class="track-option" data-src="audio/2nd song.mp3">YWF</button>
+        <div class="audio-status" aria-live="polite">
+          <span class="audio-status-dot" aria-hidden="true"></span>
+          <span class="audio-status-text">Paused</span>
+        </div>
+      </div>
+      <div class="audio-consent" id="audioConsent" role="alert">
+        <p class="audio-warning" id="audioWarningText">Warning: playing this song may expose you to copyright claims. Do you want to proceed?</p>
+        <div class="audio-consent-actions">
+          <button id="audioConsentPlay" type="button" class="btn ghost">Play song anyway</button>
+          <button id="audioConsentDecline" type="button" class="btn ghost">Do not play</button>
         </div>
       </div>
       <audio id="backgroundAudio" preload="metadata"></audio>
@@ -52,11 +60,11 @@
 
     <main>
       <section id="groupIntro" class="hero" aria-label="Group introduction">
-        <div style="flex:1">
-          <h2 style="margin:0 0 8px">Group 3 — ETECH</h2>
-          <p style="margin:0;color:var(--muted)">We are Group 3 of the E-TECH cohort. Below are the members of our group — click a member to view their project gallery.</p>
+        <div class="hero-text">
+          <h2>Group 3 — ETECH</h2>
+          <p>We are Group 3 of the E-TECH cohort. Below are the members of our group — click a member to view their project gallery.</p>
         </div>
-        <div style="min-width:280px">
+        <div class="hero-members">
           <div id="members" class="members-grid" aria-label="members"></div>
         </div>
       </section>
@@ -80,6 +88,7 @@
             </div>
           </div>
         </div>
+        <ul id="highlightTranscript" class="sr-only" aria-live="polite"></ul>
       </section>
 
       <section id="spotlightStrip" class="spotlight-strip" aria-label="Member spotlight">
